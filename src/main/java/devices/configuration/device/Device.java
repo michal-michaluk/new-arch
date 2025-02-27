@@ -11,8 +11,16 @@ class Device {
     private OpeningHours openingHours;
     private Settings settings;
 
+    public static Device newDevice(String deviceId) {
+        return new Device(
+                deviceId,
+                OpeningHours.alwaysOpened(),
+                Settings.defaultSettings()
+        );
+    }
+
     void updateOpeningHours(OpeningHours openingHours) {
-        openingHours = Objects.requireNonNullElse(openingHours, OpeningHours.alwaysOpen());
+        openingHours = Objects.requireNonNullElse(openingHours, OpeningHours.alwaysOpened());
         this.openingHours = openingHours;
     }
 
@@ -20,4 +28,11 @@ class Device {
         this.settings = this.settings.merge(settings);
     }
 
+    DeviceConfiguration toDeviceConfiguration() {
+        return new DeviceConfiguration(
+                deviceId,
+                openingHours,
+                settings
+        );
+    }
 }
